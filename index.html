@@ -1,0 +1,462 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Курсовой проект: сравнительный анализ генетического, муравьиного алгоритмов и случайного поиска для задачи МСОК">
+    <title>Задача МСОК - Курсовой проект</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #000000;
+            --accent: #000203;
+            --accent-light: #000000;
+            --text: #333;
+            --muted: #000000;
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --border: #e1e8ed;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+
+        header {
+            background: linear-gradient(135deg, #000000 0%, #585858 100%);
+            color: #fff;
+            padding: 50px 20px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+        }
+
+        header .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto 10px;
+        }
+
+        nav {
+            margin-top: 25px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 14px;
+            font-weight: 600;
+            padding-bottom: 4px;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.25s;
+        }
+
+        nav a:hover {
+            border-bottom-color: #f1c40f;
+        }
+
+        main {
+            max-width: 960px;
+            margin: 32px auto 0;
+            padding: 0 20px;
+        }
+
+        section {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 30px 32px;
+            margin-bottom: 26px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        section h2 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 18px;
+            padding-left: 14px;
+            border-left: 5px solid var(--accent);
+        }
+
+        section h3 {
+            color: var(--primary);
+            font-size: 18px;
+            margin: 22px 0 10px;
+        }
+
+        p { margin-bottom: 14px; }
+
+        
+        ul, ol {
+            padding-left: 24px;
+            margin-bottom: 14px;
+        }
+
+        li { margin-bottom: 6px; }
+
+        figure {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        figure img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        figcaption {
+            font-size: 14px;
+            color: var(--muted);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        caption {
+            text-align: left;
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            text-align: left;
+        }
+
+        th {
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        td.best {
+            color: #1e8449;
+            font-weight: 700;
+        }
+
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin: 18px 0;
+        }
+
+        .card {
+            background: var(--accent-light);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 16px 18px;
+        }
+
+        .card h4 {
+            color: var(--primary);
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .card p {
+            font-size: 14px;
+            margin: 0;
+            color: #4a5568;
+        }
+
+        code {
+            background: #eef2f7;
+            color: #c0392b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Fira Code', monospace;
+            font-size: 14px;
+        }
+
+        a.ext {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--accent);
+        }
+
+        a.ext:hover {
+            color: #1c6fa5;
+            border-bottom-style: solid;
+        }
+
+        footer a {
+            color: #f1c40f;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Задача о максимальной сумме с обязательной клеткой</h1>
+    <p class="subtitle">
+        Сравнительный анализ генетического алгоритма, муравьиного алгоритма (ACO)
+        и метода случайного поиска
+    <nav>
+        <a href="#about">О проекте</a>
+        <a href="#statement">Постановка</a>
+        <a href="#methods">Методы</a>
+        <a href="#implementation">Реализация</a>
+        <a href="#results">Результаты</a>
+        <a href="#conclusion">Выводы</a>
+        <a href="#links">Ссылки</a>
+    </nav>
+</header>
+
+<main>
+
+
+    <section id="about">
+        <h2>О проекте</h2>
+        <p>
+            В курсовой работе исследуется <strong>задача о максимальной сумме с обязательной
+            клеткой</strong> (МСОК) на прямоугольной сетке. Рассматриваются три подхода:
+            <em>генетический алгоритм</em>, <em>муравьиный алгоритм</em> и
+            <em>метод случайного поиска</em>. В качестве эталона используется
+            точное решение методом динамического программирования.
+        </p>
+
+        <p><strong>Цель работы</strong> - провести сравнительный анализ эффективности трёх метаэвристических и эвристических методов по критерию точности
+        найденного решения при фиксированном временном бюджете.</p>
+
+        <h3>Задачи работы</h3>
+        <ol class="task-list">
+            <li>Изучить теорию генетических алгоритмов и адаптировать их к условию обязательной клетки.</li>
+            <li>Изучить муравьиные алгоритмы (ACO) и реализовать соответствующий модуль на C++.</li>
+            <li>Разработать метод случайного поиска как базовый уровень сравнения (baseline).</li>
+            <li>Реализовать точное решение задачи методом динамического программирования.</li>
+            <li>Создать генератор тестовых сеток с тремя режимами распределения весов.</li>
+            <li>Провести серию вычислительных экспериментов и статистически обработать результаты.</li>
+        </ol>
+    </section>
+
+
+    <section id="statement">
+        <h2>Постановка задачи</h2>
+        <p>
+            Дана прямоугольная сетка <code>N × M</code>. Каждой клетке <code>(i, j)</code>
+            сопоставлен неотрицательный вес <code>w(i, j) ≥ 0</code>. Задана обязательная
+            (контрольная) клетка <code>(r, c)</code>.
+        </p>
+        <p>Требуется построить путь <code>P</code> из клетки <code>(1, 1)</code>
+        в <code>(N, M)</code> при условиях:</p>
+        <ul>
+            <li>каждый шаг - только вправо или вниз;</li>
+            <li>путь обязан проходить через контрольную клетку (r, c);</li>
+            <li>целевая функция - сумма весов посещённых клеток - максимизируется.</li>
+        </ul>
+
+        <p>Формально:</p>
+        <code>F(P) = Σ w(i, j)  →  max,    (i, j) ∈ P</code>
+
+        <p>
+            Ключевое свойство задачи - разложимость на две независимые подзадачи:
+            путь от <code>(1,1)</code> до <code>(r,c)</code> и путь от <code>(r,c)</code>
+            до <code>(N,M)</code>. Это используется и в динамическом программировании,
+            и при кодировании хромосом в ГА.
+        </p>
+
+        <figure>
+            <img src="Desktop_260915_1937.jpg"
+                 alt="Схема сетки"
+                 width="600">
+            <figcaption>Рис. 1. Схема разложения пути на два сегмента через контрольную клетку</figcaption>
+        </figure>
+    </section>
+
+    <section id="methods">
+        <h2>Рассмотренные методы</h2>
+
+        <h3>1. Точный метод - динамическое программирование</h3>
+        <p>
+            Основан на принципе оптимальности Беллмана. Выполняются два прохода:
+            прямой (от старта до контрольной клетки) и обратный (от контрольной клетки
+            до финиша). Оптимум вычисляется как:
+        </p>
+        <code>F_opt = dp_fwd(r, c) + dp_bwd(r, c) − w(r, c)</code>
+        <p>Сложность: <code>O(N·M)</code> по времени и памяти.</p>
+
+        <h3>2. Генетический алгоритм (ГА)</h3>
+        <ul>
+            <li><strong>Кодирование:</strong> двоичная хромосома из двух сегментов - путь до и после контрольной клетки. Число единиц в сегменте фиксировано, что гарантирует допустимость.</li>
+            <li><strong>Отбор:</strong> турнирный, размер турнира <code>k = 2</code>.</li>
+            <li><strong>Кроссовер:</strong> одноточечный с процедурой починки (repair) для сохранения числа единиц.</li>
+            <li><strong>Мутация:</strong> swap-мутация двух битов разных значений, вероятность <code>p_m = 1/L</code>.</li>
+            <li><strong>Замена:</strong> элитизм размера 1.</li>
+        </ul>
+        <p>Параметры: <code>P_size = 100</code>, <code>p_c = 0.8</code>, <code>p_m = 1/L</code>.</p>
+
+        <h3>3. Муравьиный алгоритм (ACO)</h3>
+        <ul>
+            <li>Две независимые феромонные матрицы - для сегмента до и после контрольной клетки.</li>
+            <li>Вероятностный выбор направления по правилу:
+                <code>p ∝ τ^α · η^β</code>, где η - нормированный вес целевой клетки.</li>
+            <li>Обновление феромона: испарение + накопление <code>Δτ = Q / F(P)</code>.</li>
+        </ul>
+        <p>Параметры: <code>m = 50</code> муравьёв, <code>α = 1.0</code>, <code>β = 2.0</code>, <code>ρ = 0.1</code>, <code>Q = 100</code>.</p>
+
+        <h3>4. Метод случайного поиска (baseline)</h3>
+        <p>
+            На каждой итерации генерируется случайный допустимый путь. Алгоритм
+            не использует историю поиска и не адаптирует вероятности - служит
+            нижней границей сравнения.
+        </p>
+    </section>
+
+    <section id="implementation">
+        <h2>Программная реализация</h2>
+        <p>
+            Реализация выполнена на <strong>C++17</strong> с использованием только
+            стандартной библиотеки STL. Компилятор <code>g++</code> с флагом
+            <code>-O2</code> обеспечивает высокую производительность без внешних зависимостей.
+        </p>
+
+        <p>Архитектура - модульная, каждый алгоритм в отдельном заголовочном файле:</p>
+
+        <div class="table-wrap">
+            <table>
+                <caption>Таблица 1. Модули программного комплекса</caption>
+                <thead>
+                    <tr><th>Файл</th><th>Назначение</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>common.h</code></td><td>Общие типы, таймер, кодирование/декодирование путей</td></tr>
+                    <tr><td><code>grid_generator.h</code></td><td>Генерация сеток: UNIFORM, NORMAL, CLUSTER</td></tr>
+                    <tr><td><code>dp_solver.h</code></td><td>Точное решение методом ДП (два прохода + восстановление пути)</td></tr>
+                    <tr><td><code>random_search.h</code></td><td>Метод случайного поиска</td></tr>
+                    <tr><td><code>genetic_algorithm.h</code></td><td>Генетический алгоритм</td></tr>
+                    <tr><td><code>aco_solver.h</code></td><td>Муравьиный алгоритм (Ant-Cycle)</td></tr>
+                    <tr><td><code>course_work.cpp</code></td><td>Точка входа, эксперименты</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p>
+            Генератор сеток поддерживает три режима:
+            <strong>UNIFORM</strong> (равномерный),
+            <strong>NORMAL</strong> (нормальный),
+            <strong>CLUSTER</strong> (кластерный - 10 % «горячих» клеток).
+        </p>
+    </section>
+
+    <section id="results">
+        <h2>Результаты экспериментов</h2>
+
+        <p>
+            Все эксперименты проводились при фиксированном временном бюджете
+            <code>T = 10 с</code>. Относительная погрешность
+            <code>ε = (F_opt − F_alg) / F_opt · 100 %</code> усреднялась по 10 запускам.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <caption>Таблица 2. Относительная погрешность ε (%) при T = 10 с</caption>
+                <thead>
+                    <tr>
+                        <th>Размер сетки</th>
+                        <th>Случайный поиск</th>
+                        <th>ГА</th>
+                        <th>ACO</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>10 × 10</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
+                    <tr><td>100 × 100</td><td>19.76</td><td>9.15</td><td class="best">6.23</td></tr>
+                    <tr><td>1000 × 1000</td><td>29.23</td><td>25.95</td><td class="best">10.08</td></tr>
+                    <tr><td>10000 × 10000</td><td>31.99</td><td>31.79</td><td class="best">14.11</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p>
+            На <strong>малых сетках</strong> все три алгоритма находят оптимум.
+            С ростом размерности преимущество метаэвристик становится всё более заметным:
+            на сетке <code>100 × 100</code> ACO обеспечивает погрешность 6.23 %
+            против 19.76 % у случайного поиска - <strong>в три раза точнее</strong>.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <caption>Таблица 3. Устойчивость на сетке 50 × 50 (10 запусков, T = 1 с)</caption>
+                <thead>
+                    <tr>
+                        <th>Алгоритм</th>
+                        <th>Диапазон ε, %</th>
+                        <th>Среднее ε, %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Случайный поиск</td><td>14.20 – 15.47</td><td>14.776</td></tr>
+                    <tr><td>ГА</td><td>7.22 – 9.49</td><td>8.212</td></tr>
+                    <tr><td>ACO</td><td>3.03 – 4.28</td><td class="best">3.754</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p>
+            ACO не только точнее в среднем, но и <strong>воспроизводимее</strong>:
+            разброс значений между запусками у него в два раза меньше, чем у ГА,
+            и почти в четыре раза меньше, чем у случайного поиска.
+        </p>
+
+    </section>
+
+    <section id="conclusion">
+        <h2>Основные выводы</h2>
+        <ol class="task-list">
+            <li>На сетках до <strong>10 × 10</strong> все три алгоритма находят оптимальное решение - пространство поиска ещё невелико.</li>
+            <li>С ростом размерности <strong>метаэвристики значительно превосходят</strong> случайный поиск.</li>
+            <li><strong>ACO стабильно лидирует</strong> на больших размерностях: феромонный механизм эффективнее накапливает информацию о перспективных маршрутах.</li>
+            <li><strong>ГА теряет преимущество</strong> над случайным поиском на сверхбольших сетках при жёстком бюджете времени.</li>
+            <li>Практическая рекомендация: для задач от <code>100 × 100</code> и выше предпочтителен <strong>ACO</strong>.</li>
+        </ol>
+    </section>
+
+    <section id="links">
+        <h2>Полезные ссылки</h2>
+        <ul>
+            <li>
+                <a class="ext" href="https://github.com/Accident312/Accident312.github.io.git" target="_blank" rel="noopener">
+                    Репозиторий проекта на GitHub
+                </a>
+            </li>
+            <li>
+                <a class="ext" href="https://docs.github.com/ru/pages" target="_blank" rel="noopener">
+                    Документация GitHub Pages
+                </a>
+            </li>
+            <li>
+                <a class="ext" href="https://developer.mozilla.org/ru/docs/Web/HTML" target="_blank" rel="noopener">
+                    MDN: справочник по HTML
+                </a>
+            </li>
+        </ul>
+
+    </section>
+
+</main>
+
+</body>
+</html>
