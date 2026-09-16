@@ -1,6 +1,5 @@
 <html lang="ru">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Курсовой проект: сравнительный анализ генетического, муравьиного алгоритмов и случайного поиска для задачи МСОК">
@@ -29,8 +28,8 @@
 
         header {
             background: linear-gradient(135deg, #000000 0%, #585858 100%);
-            color: #fff;
-            padding: 50px 20px 40px;
+            color: #ffffff;
+            padding: 100px 100px 100px;
             text-align: center;
         }
 
@@ -72,15 +71,8 @@
             padding: 0 20px;
         }
 
-        section {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 30px 32px;
-            margin-bottom: 26px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-        }
 
-        section h2 {
+        h2 {
             color: var(--primary);
             font-size: 24px;
             margin-bottom: 18px;
@@ -88,7 +80,7 @@
             border-left: 5px solid var(--accent);
         }
 
-        section h3 {
+        h3 {
             color: var(--primary);
             font-size: 18px;
             margin: 22px 0 10px;
@@ -229,8 +221,8 @@
 <main>
 
 
-    <section id="about">
-        <h2>О проекте</h2>
+    
+        <h2 id="about">О проекте</h2>
         <p>
             В курсовой работе исследуется <strong>задача о максимальной сумме с обязательной
             клеткой</strong> (МСОК) на прямоугольной сетке. Рассматриваются три подхода:
@@ -251,11 +243,11 @@
             <li>Создать генератор тестовых сеток с тремя режимами распределения весов.</li>
             <li>Провести серию вычислительных экспериментов и статистически обработать результаты.</li>
         </ol>
-    </section>
+    
 
 
-    <section id="statement">
-        <h2>Постановка задачи</h2>
+    
+        <h2 id="statement">Постановка задачи</h2>
         <p>
             Дана прямоугольная сетка <code>N × M</code>. Каждой клетке <code>(i, j)</code>
             сопоставлен неотрицательный вес <code>w(i, j) ≥ 0</code>. Задана обязательная
@@ -285,10 +277,8 @@
                  width="600">
             <figcaption>Рис. 1. Схема разложения пути на два сегмента через контрольную клетку</figcaption>
         </figure>
-    </section>
 
-    <section id="methods">
-        <h2>Рассмотренные методы</h2>
+        <h2 id="methods">Рассмотренные методы</h2>
 
         <h3>1. Точный метод - динамическое программирование</h3>
         <p>
@@ -324,10 +314,8 @@
             не использует историю поиска и не адаптирует вероятности - служит
             нижней границей сравнения.
         </p>
-    </section>
 
-    <section id="implementation">
-        <h2>Программная реализация</h2>
+        <h2 id="implementation">Программная реализация</h2>
         <p>
             Реализация выполнена на <strong>C++17</strong> с использованием только
             стандартной библиотеки STL. Компилятор <code>g++</code> с флагом
@@ -360,10 +348,8 @@
             <strong>NORMAL</strong> (нормальный),
             <strong>CLUSTER</strong> (кластерный - 10 % «горячих» клеток).
         </p>
-    </section>
 
-    <section id="results">
-        <h2>Результаты экспериментов</h2>
+        <h2 id="results">Результаты экспериментов</h2>
 
         <p>
             Все эксперименты проводились при фиксированном временном бюджете
@@ -422,10 +408,8 @@
             и почти в четыре раза меньше, чем у случайного поиска.
         </p>
 
-    </section>
 
-    <section id="conclusion">
-        <h2>Основные выводы</h2>
+        <h2 id="conclusion">Основные выводы</h2>
         <ol class="task-list">
             <li>На сетках до <strong>10 × 10</strong> все три алгоритма находят оптимальное решение - пространство поиска ещё невелико.</li>
             <li>С ростом размерности <strong>метаэвристики значительно превосходят</strong> случайный поиск.</li>
@@ -433,10 +417,8 @@
             <li><strong>ГА теряет преимущество</strong> над случайным поиском на сверхбольших сетках при жёстком бюджете времени.</li>
             <li>Практическая рекомендация: для задач от <code>100 × 100</code> и выше предпочтителен <strong>ACO</strong>.</li>
         </ol>
-    </section>
 
-    <section id="links">
-        <h2>Полезные ссылки</h2>
+        <h2 id="links">Полезные ссылки</h2>
         <ul>
             <li>
                 <a class="ext" href="https://github.com/Accident312/Accident312.github.io.git" target="_blank" rel="noopener">
@@ -455,7 +437,6 @@
             </li>
         </ul>
 
-    </section>
 
 </main>
 
